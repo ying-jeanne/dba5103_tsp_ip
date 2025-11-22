@@ -41,6 +41,11 @@ for algo, filename in result_files.items():
     except Exception as e:
         print(f"Error loading {algo} results: {e}")
 
+@app.after_request
+def add_security_headers(response):
+    response.headers['Content-Security-Policy'] = "default-src 'self'; script-src 'self' 'unsafe-eval' https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline'; img-src 'self' data:;"
+    return response
+
 @app.route('/')
 def index():
     return render_template('index.html')
