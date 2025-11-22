@@ -27,3 +27,10 @@ The main focus is on the **integrality gap**: the difference between the optimal
 After running, you will find:
 - **CSV files** containing test data in the `data/` directory.
 - **Graphs** showing CV for each data type and example destination distributions in the `graphs/` directory.
+## Example Outputs
+
+**CV for each data type:**
+![CV Validation](graphs/cv_validation.png)
+
+**Example destination distributions:**
+![Sample Instances](graphs/sample_instances.png)
