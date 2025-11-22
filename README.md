@@ -36,3 +36,16 @@ Each structure may imply different CV (Coefficient of Variation), you can see th
 After running, you will find:
 - **CSV files** containing test data in the `data/` directory.
 - **Graphs** showing CV for each structure type and 2 examples of each structure in the `graphs/` directory.
+
+## How to run the models and generate benchmark data for IP and LP
+
+Run the following scripts to generate results for each TSP formulation:
+
+```bash
+python run_dfj_with_testdata.py   # DFJ formulation
+python run_gg_with_testdata.py    # Gavish-Graves formulation
+python run_mtz_with_testdata.py   # MTZ formulation
+```
+For assignment problem, it takes really long to run (more than 9000 minutes), we discourage you to try on it. You can just believe us that the result would be similar to our run in `results/assignment_results.csv`
+
+All other methods' results will be produced and in the `results/` folder for further analysis and visualization.
