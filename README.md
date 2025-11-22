@@ -12,6 +12,7 @@ We use 4 types of structures: Grid City, Random Euclidean, Clustered and Hub-and
 ![Sample Instances](graphs/sample_instances.png)
 
 Each structure may imply different CV (Coefficient of Variation), you can see the distribution of CV of each structure type we use during the test.
+
 **CV for each data type:**
 ![CV Validation](graphs/cv_validation.png)
 
