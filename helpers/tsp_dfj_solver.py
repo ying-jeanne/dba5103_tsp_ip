@@ -118,7 +118,6 @@ def build_dfj_model(dist_matrix, relaxation=False, subtour_constraints=None):
 
     # For IP: Will use lazy callback (constraints added during solve)
     subtour_list = [] if not relaxation else None
-
     model.update()
     return model, x, subtour_list
 

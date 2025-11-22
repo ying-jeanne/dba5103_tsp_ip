@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TSP Integrality Gap Visualizer</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <h1>TSP Integrality Gap Visualizer</h1>
+            <p>Explore how different city structures and different algorithms affect the integrality gap in TSP
+                algorithms.</p>
+        </header>
+
+        <div class="controls">
+            <div class="control-group">
+                <label for="structure-select">Structure Type</label>
+                <select id="structure-select">
+                    <option value="" disabled selected>Select a structure...</option>
+                </select>
+            </div>
+            <button id="generate-btn" class="btn primary">Generate Random Instance</button>
+        </div>
+
+        <div class="main-content">
+            <div class="visualization-card">
+                <h2>City Distribution</h2>
+                <div class="canvas-container">
+                    <canvas id="city-chart"></canvas>
+                </div>
+                <div id="instance-info" class="info-text"></div>
+            </div>
+
+            <div class="results-card">
+                <h2>Algorithm Results</h2>
+                <div id="results-container" class="results-grid">
+                    <p class="placeholder-text">Select a structure and generate an instance to see results.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+
+</html>
