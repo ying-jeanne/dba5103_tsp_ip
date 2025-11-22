@@ -35,4 +35,4 @@ Each structure may imply different CV (Coefficient of Variation), you can see th
 
 After running, you will find:
 - **CSV files** containing test data in the `data/` directory.
-- **Graphs** showing CV for each data type and example destination distributions in the `graphs/` directory.
+- **Graphs** showing CV for each structure type and 2 examples of each structure in the `graphs/` directory.
