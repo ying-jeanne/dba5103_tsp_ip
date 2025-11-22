@@ -20,7 +20,7 @@ def build_gg_model(dist_matrix, relaxation=False):
     """
     Build Gavish-Graves TSP model
     Args:
-        dist_matrix: n×n numpy array with distances
+        dist_matrix: nxn numpy array with distances
         relaxation: if True, solve LP relaxation; if False, solve IP
     Returns:
         model: Gurobi model

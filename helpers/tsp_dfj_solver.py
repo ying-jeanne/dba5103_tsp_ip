@@ -65,7 +65,7 @@ def build_dfj_model(dist_matrix, relaxation=False, subtour_constraints=None):
     Build Dantzig-Fulkerson-Johnson TSP model
 
     Args:
-        dist_matrix: n×n numpy array with distances
+        dist_matrix: nxn numpy array with distances
         relaxation: if True, solve LP relaxation; if False, solve IP
         subtour_constraints: List of subtour constraint sets to add (for LP)
     Returns:

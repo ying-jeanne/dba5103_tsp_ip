@@ -51,4 +51,4 @@ For assignment problem, it takes really long to run (more than 9000 minutes), we
 All other methods' results will be produced and in the `results/` folder for further analysis and visualization.
 
 ## How to analyse the results with notebook
-You should now be able to use `analyze_results.ipynb` to see the final result. Knowing that local Gurabi structure to solve assignment problem for n=18 and n=20 our final result is actually using n=15 for most of the benchmarks cross algorithms.
+You should now be able to use `analyze_results.ipynb` to see the final result. Knowing that local Gurabi struggle to solve assignment problem for n=18 and n=20 our final result is actually using n=15 for most of the benchmarks cross algorithms.
