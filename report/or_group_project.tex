@@ -71,20 +71,29 @@
     {\Large\bfseries Integrality Gap Analysis of TSP Formulations \par}
     \vspace{1cm}
     \includegraphics[width=0.30\textwidth]{nus_logo.png} \\[2em]
-    {\large
-    \uncertain{Team Member 1 Name} \\
-    \uncertain{Team Member 2 Name} \\
-    \uncertain{Team Member 3 Name} \\
-    \uncertain{Team Member 4 Name} \\
-    }
-    \vspace{1cm}
-    {\large
-    National University of Singapore \\
+
+    \vspace{1.5cm}
+    \begin{tabular}{|p{6cm}|p{4cm}|}
+    \hline
+    \textbf{Name} & \textbf{Student ID} \\ \hline
+    Tseng, Yung-Yi & A0318929M \\ \hline
+    Cho Eunsoo (Ashlyn) & A0246014R \\ \hline
+    Mark Hansen Nii Darku Dodoo & A0319136E \\ \hline
+    Zhao Qiya & A0331091R \\ \hline
+    Wang Ying & A0318271H \\ \hline
+    \end{tabular}
+
     \vspace{0.5cm}
-    Submission Date: \today \\
+    {\large National University of Singapore} \\
     \vspace{0.3cm}
-    \href{https://github.com/qiyazhao062-a11y/DBA5103_TSP_Data}{Link to code repository}
-    }
+
+    \vspace{0.1cm}
+    \href{https://github.com/qiyazhao062-a11y/DBA5103_TSP_Data}{Code repository}
+
+    \href{https://dba5103.pythonanywhere.com/}{Interactive results dashboard}
+
+    \vspace{0.3cm}
+    {\small Submission Date: \today} \\
     \vfill
 \end{titlepage}
 \thispagestyle{fancy}
@@ -93,7 +102,7 @@
 %% ABSTRACT
 %% ============================================
 \section*{Abstract}
-\uncertain{Ash: will write out this part after all parts are finalised}
+This project investigates the integrality gap in the Traveling Salesman Problem to quantify the cost of convexity associated with linear programming relaxations. We perform a two-dimensional analysis that examines the interaction between three mathematical formulations of TSP (Miller-Tucker-Zemlin, Gavish-Graves, and Dantzig-Fulkerson-Johnson), along with the Assignment Problem as a baseline formulation, and four distinct distance matrix structures. By solving 120 instances ranging from random to highly structured networks, we assess how formulation tightness and data characteristics jointly determine the quality of the lower bound. Our findings confirm that while the Dantzig-Fulkerson-Johnson formulation consistently provides near-optimal bounds, weaker models such as the Miller-Tucker-Zemlin formulations exhibit large integrality gaps that are highly sensitive to data structure, particularly in clustered environments. These results offer a diagnostic framework for selecting appropriate solution methods based on network topology.
 
 %% ============================================
 %% SECTION 1: INTRODUCTION
@@ -110,7 +119,7 @@ This convexification results in an integrality gap, which is the difference betw
 While existing literature has established that different IP formulations yield different LP relaxation qualities, and separately that distance matrix variance affects TSP difficulty, no prior work has systematically examined how these two factors interact. This project addresses this gap through a comprehensive two-dimensional analysis. We posit that the ``Cost of Convexity'' is not static. Instead, we hypothesise that it is determined jointly by the formulation choice and the underlying distance structure. Specifically, we investigate whether weaker formulations amplify the integrality gap when applied to high-variance cost structures, while determining if tighter formulations provide robustness against such data variation.
 
 \subsection{Research Objective}
-This study aims to quantify the integrality gap across three distinct TSP formulations (MTZ, Gavish-Graves, and DFJ) when applied to four distinct distance structures (Grid, Random, Clustered, and Hub-and-Spoke). By isolating the interaction effects between model tightness and data structure, this research provides a diagnostic framework to guide practitioners in selecting the appropriate modeling approach based on their specific network characteristics.
+This study aims to quantify the integrality gap across three distinct TSP formulations (MTZ, Gavish-Graves, and DFJ), along with the Assignment Problem as a baseline, when applied to four distinct distance structures (Grid, Random, Clustered, and Hub-and-Spoke). By isolating the interaction effects between model tightness and data structure, this research provides a diagnostic framework to guide practitioners in selecting the appropriate modeling approach based on their specific network characteristics.
 
 %% ============================================
 %% SECTION 2: LITERATURE REVIEW - FORMULATIONS
@@ -132,7 +141,7 @@ z_{LP}^{Assignment} \leq z_{LP}^{MTZ} \leq z_{LP}^{GG} \leq z_{LP}^{DFJ} \leq z_
 In this hierarchy, the Assignment Problem formulation serves as the baseline and represents the weakest relaxation. It effectively ignores connectivity requirements and provides the loosest lower bound. Conversely, the DFJ formulation represents the theoretical strongest bound. Its constraints define facets of the TSP polytope that approximate the convex hull of integer solutions more precisely than the compact formulations of MTZ and GG. The following sections detail the mathematical structure of these models to explain the mechanics driving this hierarchy.
 
 \subsection{The Assignment Problem (AP) Formulation}
-This section establishes the baseline formulation against which all subsequent TSP models are measured. The Assignment Problem (AP) serves as the most relaxed version of the TSP, enforcing only the condition that every city is entered and left exactly once, while ignoring the connectivity requirement for a single continuous tour. The mathematical formulation of AP can be found in Appendix~\ref{app:ap}.
+This section establishes the baseline formulation against which all subsequent TSP models are measured. The Assignment Problem (AP) serves as the most relaxed version of the TSP, enforcing only the condition that every city is entered and left exactly once, while ignoring the connectivity requirement for a single continuous tour. The mathematical formulation of AP can be found in Appendix~\ref{app:ap}, and the solver implementation is provided in Appendix~\ref{app:code_ap}.
 
 \subsubsection{Rationale of AP}
 We include the Assignment Problem formulation not as a valid method for solving the TSP, but as a fundamental benchmark for analyzing the cost of convexity. Mathematically, the AP is a relaxation of the TSP obtained by removing all subtour elimination constraints. Since any valid TSP tour must satisfy the degree constraints (entering and leaving each city exactly once), the set of feasible TSP solutions is a subset of the feasible AP solutions. Therefore, the optimal objective value of the Assignment Problem ($z_{IP}^{AP}$) provides an absolute lower bound for the optimal value of any valid TSP formulation ($z_{IP}^{TSP}$):
@@ -239,7 +248,7 @@ Although the intended CV targets were 0.2, 0.5, 0.65, and 1.0, the extreme value
 
 \subsection{Two-Dimensional Analysis Formulation}
 
-To systematically evaluate relaxation tightness across both modelling and distance-structure dimensions, we construct an experiment involving four TSP formulations described in Section 2 --- \textbf{Assignment, Miller-Tucker-Zemlin (MTZ), Dantzig-Fulkerson-Johnson (DFJ), and Gavish-Graves (GG)}, as well as four distance structures: \textbf{grid, Random Euclidean, clustered, and hub-and-spoke}, for a total of 16 test scenarios. For each TSP formulation and distance structure combination, we generate 10 random instances, each containing 15 cities (or variable $x$).
+To systematically evaluate relaxation tightness across both modelling and distance-structure dimensions, we construct an experiment involving four TSP formulations described in Section 2 --- \textbf{Assignment, Miller-Tucker-Zemlin (MTZ), Dantzig-Fulkerson-Johnson (DFJ), and Gavish-Graves (GG)}, as well as four distance structures: \textbf{grid, Random Euclidean, clustered, and hub-and-spoke}, for a total of 16 test scenarios. For each TSP formulation and distance structure combination, we generate 10 random instances. Although instances were created at $n=15, 18,$ and $20$, our main analysis focuses on $n=15$ where all formulations could be solved to optimality without timeouts.
 
 For every instance in each test scenario, we perform the following steps:
 \begin{enumerate}
@@ -255,9 +264,7 @@ After computing the integrality gaps for all ten instances within each scenario,
 
 \subsection{Computational Limitations and Mitigation}
 
-During implementation, we observed that the formulations became computationally expensive for instances with 20 cities. In several test runs, the solver required more than ten hours to obtain the optimal solution for many of the 10 instances in a given scenario.
-
-To ensure the feasibility of experimentation, we imposed a time limit of 300 seconds (5 minutes) on the MTZ model. This threshold was selected based on the average of preliminary tests from smaller city numbers (i.e., 15 and 18) that captured the typical solving time before excessive computational escalation. When the solver reached the time limit, it returned the best $z$ and corresponding $w$ available at that time. As a result, the computed integrality gaps under the time-limited runs are approximate.
+During implementation, we observed that MTZ and Assignment Problem became computationally expensive for larger instances, with some runs exceeding ten hours for $n=20$. To ensure feasibility, we imposed a 300-second timeout on these formulations. However, since timeouts return approximate solutions rather than proven optima, the resulting integrality gaps may be inaccurate. Therefore, the results presented in this study are based on $n=15$ instances where all formulations could be solved to optimality.
 
 In our implementation of the DFJ formulation, we employed lazy constraints to improve computational efficiency. Instead of including all subtour elimination constraints upfront, the solver starts with only the assignment constraints. The callback function detects subtours in integer-feasible solutions and adds the corresponding subtour-elimination constraints dynamically. This approach ensures that only violated subtour constraints are introduced and helps to accelerate the solving process.
 
@@ -298,7 +305,7 @@ The result shows that the tighter formulations produce smaller integrality gaps.
 
 Figure~\ref{fig:ip_lp} illustrates the relationships between the LP relaxation and IP optimal values. Across all four distance structures, the DFJ formulation produces LP values that are nearly identical to their corresponding IP optima, forming a gap close to zero. The behavior is expected and aligns well with the established findings in the literature reviews, as DFJ formulation includes strong subtour-elimination constraints that make its LP relaxation particularly tight.
 
-In contrast, the assignment formulation consistently exhibits the largest integrality gaps in every distance structure. Our results are expected and reflect that the formulation enforces the inflow and outflow constraints, but lacks explicit sub-tour elimination constraints. As a result, the LP relaxation produces highly fractional solutions containing multiple small subtours, and yields a loose lower bound and thus a larger integrality gap.
+In contrast, the assignment formulation and MTZ consistently exhibit the largest integrality gaps in every distance structure. Our results are expected and reflect that the formulation enforces the inflow and outflow constraints, but lacks explicit sub-tour elimination constraints. As a result, the LP relaxation produces highly fractional solutions containing multiple small subtours, and yields a loose lower bound and thus a larger integrality gap.
 
 \begin{figure}[H]
 \centering
@@ -315,7 +322,7 @@ Across the four cost structures, we first observe that the grid distance structu
 
 The Random Euclidean structure introduces moderate cost variation, and this distance structure separates the behavior of the weaker and stronger formulations. MTZ and GG exhibit noticeable increases in their integrality gaps, while DFJ remains extremely tight. In contrast, the clustered structure produces much larger gaps, especially for the loose TSP formulations.
 
-However, hub-and-spoke contradicts our original hypothesis that a larger cost variation leads to a larger integrality gap among all four TSP formulations. Despite having the largest cost variation (CV), the outcome shows that the integrality gap is similar to Random Euclidean, where the cost variation is relatively low, and the gap is far smaller than the clustered structure.
+However, hub-and-spoke contradicts our original hypothesis that a larger cost variation leads to a larger integrality gap among all four TSP formulations. Despite having the largest cost variation (CV), the outcome shows that the integrality gap is similar to Random Euclidean, where the cost variation is relatively low, and the gap is far smaller than the clustered structure. This may be because the hub-and-spoke structure creates a natural tour pattern (visiting the hub between each spoke), which even weak formulations can approximate without forming cheap disconnected subtours.
 
 \begin{figure}[H]
 \centering
@@ -345,7 +352,7 @@ Table~\ref{tab:anova_structure} summarizes the p-value and F-statistic for each 
 \small
 \begin{tabular}{lccc}
 \toprule
-\textbf{Formulation} & \textbf{F-Stat} & \textbf{p-value} & \textbf{Sig.?} \\
+\textbf{Formulation} & \textbf{F-Stat} & \textbf{p-value} & \textbf{Significant} \\
 \midrule
 DFJ & 1.90 & 0.148 & No \\
 GG & 151.78 & 1.75e-20 & Yes \\
@@ -410,7 +417,7 @@ From the above integrality gap results, the weakest combinations are:
     \item MTZ formulation with the clustered distance structure,
     \item GG formulation with the clustered structure,
 \end{enumerate}
-Each corresponding gap of approximately 74\% for the former two combinations, and 44\% for the last.
+Each corresponding gap of approximately 78\% for the former two combinations, and 45\% for the last.
 
 The clustered structure has very low local costs but high inter-cluster costs. The weak formulations, such as assignment, and MTZ exploit this weakness by forming small and ``cheap'' cycles on each sub-tour, and thus give an extremely low linear programming cost as well as avoiding the high cost of the required inter-cluster routes, and thus maximizing the integrality gap.
 
@@ -422,16 +429,18 @@ Table~\ref{tab:recommendations} summarizes the recommended approach and the expe
 \centering
 \caption{Recommended TSP Approach for Distance Structures}
 \label{tab:recommendations}
-\small
-\begin{tabular}{p{2.2cm}p{2.5cm}p{3.2cm}p{4.5cm}}
+\footnotesize
+\begin{tabular}{p{2.2cm}p{2.6cm}p{3.2cm}p{4.5cm}}
 \toprule
 \textbf{CV} & \textbf{Structure} & \textbf{Recommended} & \textbf{Expected Gap} \\
 \midrule
-Low (0.4--0.46) & Grid, Random Euclidean & AP, MTZ, GG & 0\%--20\% \\
+Low (0.42) & Grid & Any formulation & $\approx$0\% \\
 \addlinespace
-Medium (0.6) & Clustered & DFJ (best), GG & $\approx$0\% (DFJ), $\approx$44\% (GG) \\
+Low (0.46) & Random Euclidean & GG, DFJ & $\approx$13\% (GG), $\approx$0\% (DFJ) \\
 \addlinespace
-Med--High (0.62--0.65) & Hub-and-Spoke & DFJ (best) & $\approx$0\% (DFJ), 12\%--16\% (others) \\
+Medium (0.63) & Clustered & DFJ (best), GG & $\approx$0\% (DFJ), $\approx$45\% (GG) \\
+\addlinespace
+Med--High (0.62--0.65) & Hub-and-Spoke & DFJ (best) & $\approx$0\% (DFJ), 10\%--16\% (others) \\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -458,7 +467,7 @@ Key findings include:
 
 \textbf{Limitations:}
 \begin{itemize}
-    \item Computational constraints limited the problem size to $n=15$ for most benchmarks, especially for the assignment problem.
+    \item Computational constraints limited the problem size to $n=15$ for most benchmarks, especially for the assignment problem, for more extensive testing we may switch to gurobi cloud.
     \item The study focused on a small set of formulations and data structures, leaving room for broader exploration.
 \end{itemize}
 
@@ -611,5 +620,8 @@ Alternatively, these can be expressed as ``cutset'' constraints, requiring that 
 
 \section{Code: MTZ Solver}\label{app:code_mtz}
 \lstinputlisting[language=Python]{../helpers/tsp_mtz_solver.py}
+
+\section{Code: AP Solver}\label{app:code_ap}
+\lstinputlisting[language=Python]{../helpers/tsp_ap_solver.py}
 
 \end{document}
