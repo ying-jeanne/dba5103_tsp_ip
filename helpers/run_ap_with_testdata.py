@@ -7,7 +7,7 @@ from pathlib import Path
 import pandas as pd
 import numpy as np
 from tsp_ap_solver import solve_ap
-from tsp_mtz_solver import solve_mtz
+from tsp_dfj_solver import solve_dfj_ip
 
 def compute_cv(dist_matrix):
     """Compute coefficient of variation of distance matrix"""
@@ -38,14 +38,13 @@ def run_all_experiments(data_folder=Path(__file__).parent.parent / "data", sizes
 
                 # Solve AP (Lower Bound)
                 ap_obj = solve_ap(distance_matrix)
-                
-                # Solve IP (True Optimum) using MTZ solver
-                # We use MTZ IP as the baseline for True Optimum
-                ip_obj, limited = solve_mtz(distance_matrix, is_ip=True, time_limit=300)
+
+                # Solve IP (True Optimum) using DFJ solver (much faster than MTZ)
+                ip_obj = solve_dfj_ip(distance_matrix)
 
                 gap_absolute = ip_obj - ap_obj if (ip_obj is not None and ap_obj is not None) else None
                 gap_percent = (gap_absolute / ip_obj * 100) if (ip_obj and gap_absolute is not None) else None
-                
+
                 z_ap_str = f"{ap_obj:.2f}" if ap_obj is not None else "NaN"
                 z_ip_str = f"{ip_obj:.2f}" if ip_obj is not None else "NaN"
                 print(f"Solved {structure} (N={n}, ID={instance_idx}). Z_AP={z_ap_str}, Z_IP={z_ip_str}")
@@ -58,13 +57,12 @@ def run_all_experiments(data_folder=Path(__file__).parent.parent / "data", sizes
                     "Z_AP": ap_obj,
                     "Z_IP": ip_obj,
                     "gap_absolute": gap_absolute,
-                    "gap_percent": gap_percent,
-                    "time_limited": limited
+                    "gap_percent": gap_percent
                 })
 
     df = pd.DataFrame(all_results)
     # Reorder columns
-    column_order = ["n", "structure", "instance_idx", "cv", "Z_AP", "Z_IP", "gap_absolute", "gap_percent", "time_limited"]
+    column_order = ["n", "structure", "instance_idx", "cv", "Z_AP", "Z_IP", "gap_absolute", "gap_percent"]
     df = df[column_order]
     return df
 

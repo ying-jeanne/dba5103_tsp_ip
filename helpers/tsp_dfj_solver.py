@@ -160,6 +160,28 @@ def compute_cv(dist_matrix):
     return cv
 
 
+def solve_dfj_ip(dist_matrix):
+    """
+    Solve TSP IP using DFJ formulation with lazy constraints.
+    Args:
+        dist_matrix: nxn numpy array with distances
+    Returns:
+        IP optimal objective value, or None if not solved
+    """
+    n = len(dist_matrix)
+    model_ip, x_ip, subtour_list = build_dfj_model(dist_matrix, relaxation=False)
+
+    # Set callback for lazy constraint generation
+    model_ip.optimize(
+        lambda model, where: subtour_callback(model, where, x_ip, n, subtour_list)
+    )
+
+    if model_ip.status == GRB.OPTIMAL:
+        return model_ip.objVal
+    else:
+        return None
+
+
 def solve_instance(dist_matrix_path):
     # Load distance matrix
     dist_matrix = load_distance_matrix(dist_matrix_path)
