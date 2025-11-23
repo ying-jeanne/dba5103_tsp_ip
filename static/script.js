@@ -15,6 +15,13 @@ document.addEventListener('DOMContentLoaded', () => {
                 option.textContent = structure.charAt(0).toUpperCase() + structure.slice(1).replace('_', ' ');
                 structureSelect.appendChild(option);
             });
+
+            // Auto-select 'grid' and load a random instance
+            if (structures.includes('grid')) {
+                structureSelect.value = 'grid';
+                // Automatically generate an instance
+                generateBtn.click();
+            }
         });
 
     generateBtn.addEventListener('click', () => {
@@ -149,7 +156,17 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         results.forEach(res => {
-            const gapPercent = res.gap_percent !== null ? parseFloat(res.gap_percent).toFixed(4) : 'N/A';
+            // Distinguish between zero gap and missing data
+            // If gap_absolute is 0, it's truly zero (optimal solution)
+            // If gap_percent is null but gap_absolute is not 0, data is missing
+            let gapPercent;
+            if (res.gap_absolute !== null && res.gap_absolute !== undefined && Math.abs(res.gap_absolute) < 0.0001) {
+                gapPercent = '0.0000';
+            } else if (res.gap_percent !== null && res.gap_percent !== undefined) {
+                gapPercent = parseFloat(res.gap_percent).toFixed(4);
+            } else {
+                gapPercent = 'N/A';
+            }
             const div = document.createElement('div');
             div.className = 'result-item';
             div.innerHTML = `

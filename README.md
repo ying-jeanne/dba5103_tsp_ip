@@ -52,3 +52,20 @@ All other methods' results will be produced and in the `results/` folder for fur
 
 ## How to analyse the results with notebook
 You should now be able to use `analyze_results.ipynb` to see the final result. Knowing that local Gurabi struggle to solve assignment problem for n=18 and n=20 our final result is actually using n=15 for most of the benchmarks cross algorithms.
+
+## How to start the toy website
+This is very easy, don't get scared by the word `web app`
+
+First run the python script to precompute the TSP solutions, since it would require gurabi license, it is better to run in local and store the result for showing on the UI
+
+```bash
+python precompute_tours.py 
+```
+
+This would generate the best TSP solution in `results/optimal_tours.csv`
+
+Now you can spin up the flask website by simply running
+
+```bash
+python app.py
+```

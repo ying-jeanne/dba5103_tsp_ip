@@ -134,12 +134,12 @@ def get_instance_data():
                     ]
             
             elif algo == 'Assignment':
-                # Matches on n_cities, structure, instance
-                if all(col in df.columns for col in ['n_cities', 'structure', 'instance']):
+                # Matches on n, structure, instance_idx (same schema as MTZ)
+                if all(col in df.columns for col in ['n', 'structure', 'instance_idx']):
                     match = df[
-                        (df['n_cities'] == n) & 
+                        (df['n'] == n) & 
                         (df['structure'] == structure) & 
-                        (df['instance'] == instance_idx)
+                        (df['instance_idx'] == instance_idx)
                     ]
             
             if not match.empty:
