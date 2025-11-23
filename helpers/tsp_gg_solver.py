@@ -121,8 +121,8 @@ def solve_instance(dist_matrix_path):
     # Compute coefficient of variation
     results['cv'] = compute_cv(dist_matrix)
 
-    ip_result = solve_tsp_gg(dist_matrix, relaxation=False)
-    results['IP_obj'] = ip_result['objective']
+    # Use DFJ for IP (much faster than GG IP)
+    results['IP_obj'] = solve_dfj_ip(dist_matrix)
 
     # Time only the LP relaxation
     lp_start = time.time()

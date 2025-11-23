@@ -23,7 +23,7 @@ class TSPDataGenerator:
         os.makedirs(output_dir, exist_ok=True)
         os.makedirs(graph_dir, exist_ok=True)
         # Experimental parameters
-        self.n_cities_options = [15, 18, 20]
+        self.n_cities_options = [15, 18, 20, 100]
         self.n_instances = 10
         self.structures = ['grid', 'random', 'clustered', 'hub_spoke']
         
@@ -45,18 +45,19 @@ class TSPDataGenerator:
         """
         Grid City: Regular grid with Euclidean distance
         Target CV: 0.42
+        Coordinates scaled to 1000x1000
         """
         grid_size = int(np.ceil(np.sqrt(n)))
-        spacing = 50
-        
-        x = np.arange(grid_size) * spacing
-        y = np.arange(grid_size) * spacing
+        spacing = 1000 / (grid_size + 1)  # Scale to fit within 1000x1000
+
+        x = np.arange(1, grid_size + 1) * spacing
+        y = np.arange(1, grid_size + 1) * spacing
         xx, yy = np.meshgrid(x, y)
         points = np.column_stack([xx.flatten(), yy.flatten()])[:n]
-        
+
         # Convert to float before adding jitter
         points = points.astype(float)
-        
+
         # Minimal jitter to avoid perfect symmetry
         jitter = np.random.normal(0, spacing * 0.001, points.shape)
         points += jitter
@@ -68,8 +69,9 @@ class TSPDataGenerator:
         """
         Random Euclidean: Uniformly distributed points
         Target CV: 0.46
+        Coordinates scaled to 1000x1000
         """
-        points = np.random.uniform(0, 100, (n, 2))
+        points = np.random.uniform(0, 1000, (n, 2))
         dist_matrix = cdist(points, points, metric='euclidean')
         return points, dist_matrix
     
@@ -78,19 +80,20 @@ class TSPDataGenerator:
         """
         Clustered: Multiple tight clusters with large inter-cluster distances
         Target CV: 0.63
+        Coordinates scaled to 1000x1000
         """
         cities_per_cluster = n // n_clusters
         remainder = n % n_clusters
-        
-        # Cluster centers far apart
-        cluster_centers = np.random.uniform(0, 100, (n_clusters, 2))
+
+        # Cluster centers far apart (scaled to 1000x1000)
+        cluster_centers = np.random.uniform(0, 1000, (n_clusters, 2))
         points = []
         for i in range(n_clusters):
             n_in_cluster = cities_per_cluster + (1 if i < remainder else 0)
-            
-            # Tight distribution around center (radius 5)
+
+            # Tight distribution around center (radius 50, scaled from 5)
             angles = np.random.uniform(0, 2*np.pi, n_in_cluster)
-            radii = np.random.uniform(0, 5, n_in_cluster)
+            radii = np.random.uniform(0, 50, n_in_cluster)
             cluster_points = cluster_centers[i] + np.column_stack([
                 radii * np.cos(angles),
                 radii * np.sin(angles)
@@ -106,26 +109,27 @@ class TSPDataGenerator:
         Hub-and-Spoke: Central hub with radiating spokes
         Spoke-to-spoke distances amplified to create high CV
         Target CV: 0.75
+        Coordinates scaled to 1000x1000
         """
-        # Central hub
-        hub = np.array([[50, 50]])
+        # Central hub (center of 1000x1000 space)
+        hub = np.array([[500, 500]])
         n_spokes = n - 1
-        
+
         # Distribute spokes on circle with varying radii
         angles = np.linspace(0, 2*np.pi, n_spokes, endpoint=False)
-        
-        # Two groups: close and far spokes for maximum variation
+
+        # Two groups: close and far spokes for maximum variation (scaled 10x)
         n_close = n_spokes // 2
         radii = np.zeros(n_spokes)
-        radii[:n_close] = np.random.uniform(5, 15, n_close)
-        radii[n_close:] = np.random.uniform(70, 90, n_spokes - n_close)
+        radii[:n_close] = np.random.uniform(50, 150, n_close)
+        radii[n_close:] = np.random.uniform(350, 450, n_spokes - n_close)
         spoke_cities = hub + np.column_stack([
             radii * np.cos(angles),
             radii * np.sin(angles)
         ])
         points = np.vstack([hub, spoke_cities])
         dist_matrix = cdist(points, points, metric='euclidean')
-        
+
         # Amplify spoke-to-spoke distances (7x)
         for i in range(1, n):
             for j in range(i+1, n):

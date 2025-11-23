@@ -34,7 +34,7 @@ def run_all_experiments(data_folder=Path(__file__).parent.parent / "data", sizes
 
 if __name__ == "__main__":
     # Run experiments on all problem sizes: n=15, 18, 20, save the result into dfj_results.csv
-    results_df = run_all_experiments(sizes=[15, 18, 20])
+    results_df = run_all_experiments(sizes=[15, 18, 20, 100])
     output_file = Path(__file__).parent.parent / "results" / "dfj_results.csv"
     results_df.to_csv(output_file, index=False)
     print(f"Experiments completed. Results saved to: {output_file}")

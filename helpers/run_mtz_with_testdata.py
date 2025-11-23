@@ -42,7 +42,7 @@ def run_all_experiments(data_folder=Path(__file__).parent.parent / "data", sizes
     return df
 
 if __name__ == "__main__":
-    results_df = run_all_experiments(sizes=[15, 18, 20])
+    results_df = run_all_experiments(sizes=[15, 18, 20, 100])
     output_file = Path(__file__).parent.parent / "results" / "mtz_results.csv"
     output_file.parent.mkdir(exist_ok=True)
     results_df.to_csv(output_file, index=False)
