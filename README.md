@@ -8,6 +8,11 @@ The main focus is on the **integrality gap**: the difference between the optimal
 
 We use 4 types of structures: Grid City, Random Euclidean, Clustered and Hub-and-Spoke. You can see what does this mean in the graph below.
 
+**Play with it online:**
+Visualize it here: [Go to the website](https://dba5103.pythonanywhere.com/)
+
+You can also run the server on your own computer, see [How to start the toy website](#how-to-start-the-toy-website)
+
 **Example destination distributions:**
 ![Sample Instances](graphs/sample_instances.png)
 
