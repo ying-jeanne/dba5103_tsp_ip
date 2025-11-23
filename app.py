@@ -151,14 +151,6 @@ def get_instance_data():
                 
                 gap_abs = row.get('gap_absolute')
                 gap_pct = row.get('gap_percent') or row.get('Gap_Percent')
-                
-                # Special handling for MTZ: 'gap_absolute' in CSV is actually percentage
-                if algo == 'MTZ':
-                    gap_pct = row.get('gap_absolute')
-                    if ip_obj is not None and lp_obj is not None:
-                        gap_abs = ip_obj - lp_obj
-                    else:
-                        gap_abs = None
 
                 res = {
                     'algorithm': algo,
