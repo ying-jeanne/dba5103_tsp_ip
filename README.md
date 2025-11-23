@@ -50,13 +50,15 @@ Run the following scripts to generate results for each TSP formulation:
 python run_dfj_with_testdata.py   # DFJ formulation
 python run_gg_with_testdata.py    # Gavish-Graves formulation
 python run_mtz_with_testdata.py   # MTZ formulation
+python run_ap_with_testdata.py    # Assignment Problem relaxation
 ```
-For assignment problem, it takes really long to run (more than 9000 minutes), we discourage you to try on it. You can just believe us that the result would be similar to our run in `results/assignment_results.csv`
 
-All other methods' results will be produced and in the `results/` folder for further analysis and visualization.
+**Note:** For MTZ and Assignment Problem, we use the DFJ formulation with lazy constraints to compute the IP optimal value (true TSP optimum). This is mathematically equivalent to solving the native IP for each formulation, but significantly faster. The LP relaxation is computed using each formulation's own relaxation.
+
+Results will be saved in the `results/` folder for further analysis and visualization.
 
 ## How to analyse the results with notebook
-You should now be able to use `analyze_results.ipynb` to see the final result. Knowing that local Gurabi struggle to solve assignment problem for n=18 (18 cities to travel) and n=20 (20 cities to travel), our final result is actually using n=15 for most of the benchmarks cross algorithms.
+You should now be able to use `analyze_results.ipynb` to see the final result. The analysis covers problem sizes n=15, 18, and 20 across all formulations.
 
 ## How to start the toy website
 This is very easy, don't get scared by the word `web app`
