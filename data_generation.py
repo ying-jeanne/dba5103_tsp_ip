@@ -115,10 +115,10 @@ class TSPDataGenerator:
         hub = np.array([[500, 500]])
         n_spokes = n - 1
 
-        # Distribute spokes on circle with varying radii
-        angles = np.linspace(0, 2*np.pi, n_spokes, endpoint=False)
+        # Use random angles to spread spokes more naturally (avoids clustering for large n)
+        angles = np.random.uniform(0, 2*np.pi, n_spokes)
 
-        # Two groups: close and far spokes for maximum variation (scaled 10x)
+        # Two groups: close and far spokes for maximum variation
         n_close = n_spokes // 2
         radii = np.zeros(n_spokes)
         radii[:n_close] = np.random.uniform(50, 150, n_close)
